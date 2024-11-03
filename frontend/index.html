@@ -3,65 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>MINI UIUC App</title>
-    <style >
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="title">MINI UIUC</div>
+    <div id="title" class="title">MINI UIUC</div>
 
-    <div class="container">
+    <div id="container" class="container">
         
-        <div class="leftside">
-            <div class="text-area">
-                <div class="teacher-image">Teacher Image</div>
-                <div class="text-content">
+        <div id="leftside" class="leftside">
+            <div id="textArea" class="text-area">
+                <div id="teacherImage" class="teacher-image">Teacher Image</div>
+                <div id="textContent" class="text-content">
                     <div>Text area</div>
-                    <!-- <div class="book-icon">&#128218;</div> -->
                 </div>
-            
             </div>
 
-
-            <div class="user-input">
-                <textarea class="user-text-area" placeholder="User text area"></textarea>
-                <button class="enter-btn">Enter</button>
+            <div id="userInput" class="user-input">
+                <textarea id="userTextArea" class="user-text-area" placeholder="User text area"></textarea>
+                <button id="enterButton" class="enter-btn">Enter</button>
             </div>
-
-
-
         </div>
 
-        <div class="sidebar">
+        <div id="sidebar" class="sidebar">
 
-            <div class="agents">
-                <div class="img-section">
-                    <div class="img-circle">Img</div>
-                    <div class="img-text">Text</div>
-                </div>
-                <div class="img-section">
-                    <div class="img-circle">Img</div>
-                    <div class="img-text">Text</div>
-                </div>
-                <div class="img-section">
-                    <div class="img-circle">Img</div>
-                    <div class="img-text">Text</div>
-                </div>
-
+            <div id="agentsContainer" class="agents">
+                <!-- Agents will be dynamically inserted here -->
             </div>
 
-            <div class="notes-section">
-                <button class="notes-btn">
+            <div id="notesSection" class="notes-section">
+                <button id="notesButton" class="notes-btn">
                     &#x2B05;&#xFE0E; Notes &#x27A1;&#xFE0E;
                 </button>
             </div>
-
-
         </div>
-
-
-
     </div>
+
+    <script src="renderer.js"></script>
 </body>
 </html>
