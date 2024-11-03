@@ -6,3 +6,6 @@ pip install llama-index
 conda create -n autogen python=3.10
 conda activate autogen
 pip install autogen-agentchat==0.4.0.dev2
+nvm use 20
+npm init
+npm install --save-dev electron
