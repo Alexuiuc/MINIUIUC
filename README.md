@@ -9,3 +9,5 @@ pip install autogen-agentchat==0.4.0.dev2
 nvm use 20
 npm init
 npm install --save-dev electron
+`remember to to set the entry point as main.js` 
+pip install Flask
