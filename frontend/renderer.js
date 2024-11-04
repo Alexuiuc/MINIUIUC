@@ -141,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.updateAgentsFromAPI = updateAgentsFromAPI;
 
     // Example: Add initial agents (replace these with real data)
-    addAgent({ name: 'Dean', image: './images/Dean.webp', description: 'Dean' });
-    addAgent({ name: 'Feynman', image: './images/Feynman.webp', description: 'Feynman' });
+    addAgent({ name: 'Dean', image: './images/Dean.webp', description: 'I am the Dean of this mini UIUC, you can ask any admin question' });
+    addAgent({ name: 'Feynman', image: './images/Feynman.webp', description: 'I am the helper to help people use Feyrnman method' });
 
     // Example: Fetch agents from an API (uncomment and replace URL)
     // updateAgentsFromAPI('https://example.com/api/agents');
