@@ -1,3 +1,5 @@
+// JavaScript Code
+
 document.addEventListener('DOMContentLoaded', () => {
     const agentsContainer = document.getElementById('agentsContainer');
     const teacherImage = document.getElementById('teacherImage');
@@ -65,10 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to send user input to an API
-    async function sendUserInputToAPI(inputText, apiUrl) {
+    async function sendUserInputToAPI(inputText) {
+        const apiUrl = window.env.API_URL; // Use the API_URL from the environment variables
         try {
             const escapedInputText = escapeHTML(inputText);
-            const response = await fetch(apiUrl, {
+            const response = await fetch(`${apiUrl}/user-input`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -100,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputText = userInput.value;
         if (inputText) {
             // Send the user input to the API
-            sendUserInputToAPI(inputText, 'https://example.com/api/user-input'); // Replace with your actual API URL
+            sendUserInputToAPI(inputText);
             
             // Append the user input to the textContent area
             const userMessageDiv = document.createElement('div');
