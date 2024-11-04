@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             agentMessageDiv.style.borderRadius = '10px';
             agentMessageDiv.style.margin = '10px 0';
             textContent.appendChild(agentMessageDiv);
+            textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
         });
 
         agentsContainer.appendChild(imgSection);
@@ -76,6 +77,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const result = await response.json();
             console.log('Response from API:', result);
+
+            // Append the agent's reply to the textContent area
+            if (result.agentname && result.reply) {
+                const agentMessageDiv = document.createElement('div');
+                agentMessageDiv.className = 'agent-message';
+                agentMessageDiv.innerHTML = `<strong>Agent (${escapeHTML(result.agentname)}):</strong> ${escapeHTML(result.reply)}`;
+                agentMessageDiv.style.backgroundColor = '#f3e5f5'; // Light purple background for agent
+                agentMessageDiv.style.padding = '10px';
+                agentMessageDiv.style.borderRadius = '10px';
+                agentMessageDiv.style.margin = '10px 0';
+                textContent.appendChild(agentMessageDiv);
+                textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
+            }
         } catch (error) {
             console.error('Error sending user input:', error);
         }
@@ -97,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             userMessageDiv.style.borderRadius = '10px';
             userMessageDiv.style.margin = '10px 0';
             textContent.appendChild(userMessageDiv);
+            textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
 
             // Clear the user input field
             userInput.value = '';
