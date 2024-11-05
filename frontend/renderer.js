@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const textContent = document.getElementById('textContent');
     const userInput = document.getElementById('userTextArea');
     const enterButton = document.getElementById('enterButton');
+    const uploadButton = document.getElementById('uploadButton');
+    const uploadStatus = document.getElementById('upload-status');
 
     // Function to escape HTML to prevent XSS attacks
     function escapeHTML(str) {
@@ -28,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             teacherImage.innerHTML = `<img src="${escapeHTML(agentData.image)}" alt="Agent Image" style="width:100%; height:100%; object-fit: cover;">`;
             const agentMessageDiv = document.createElement('div');
             agentMessageDiv.className = 'agent-message';
-            agentMessageDiv.innerHTML = `<strong>Agent (${escapeHTML(agentData.name)}):</strong> ${escapeHTML(agentData.description)}`;
+            agentMessageDiv.innerHTML = `<strong>Agent (${escapeHTML(agentData.name)}):</strong> ${agentData.description}`;
             agentMessageDiv.style.backgroundColor = '#f3e5f5'; // Light purple background for agent
             agentMessageDiv.style.padding = '10px';
             agentMessageDiv.style.borderRadius = '10px';
@@ -36,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             textContent.appendChild(agentMessageDiv);
             textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
         });
+
 
         agentsContainer.appendChild(imgSection);
     }
@@ -97,6 +100,39 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error sending user input:', error);
         }
     }
+        // Function to handle file upload
+        async function handleFileUpload(file) {
+            const apiUrl = window.env.API_URL; // Use the API_URL from the environment variables
+            const formData = new FormData();
+            formData.append('file', file);
+    
+            try {
+                const response = await fetch(`${apiUrl}/uploadFile`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                console.log('File upload response:', result);
+                // uploadStatus.innerText = `Upload successful: ${result.filename}`;
+                // uploadStatus.style.color = 'green';
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                // uploadStatus.innerText = 'Error uploading file';
+                // uploadStatus.style.color = 'red';
+            }
+        }
+    
+        // Event listener for the upload button
+        uploadButton.addEventListener('click', () => {
+            if (fileInput.files.length > 0) {
+                handleFileUpload(fileInput.files[0]);
+            } else {
+                // uploadStatus.innerText = 'No file selected';
+                // uploadStatus.style.color = 'red';
+                console.log("upload fail");
+            }
+        });
+    
 
     // Function to handle user input submission
     function handleUserInputSubmission() {
@@ -121,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
     // Event listener for the enter button
     enterButton.addEventListener('click', handleUserInputSubmission);
 
@@ -144,9 +181,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.updateAgentsFromAPI = updateAgentsFromAPI;
 
     // Example: Add initial agents (replace these with real data)
-    addAgent({ name: 'Dean', image: './images/Dean.webp', description: 'I am the Dean of this mini UIUC, you can ask any admin question' });
-    addAgent({ name: 'Feynman', image: './images/Feynman.webp', description: 'I am the helper to help people use Feyrnman method' });
+    addAgent({ name: 'Dean', image: './images/Dean.webp', description: 'I am the Dean of this mini UIUC, here is what you can do by using this miniapp:<br> 1 read a book together<br> 2 learn a video lecture together<br> 3 study a concept\n' });
+    addAgent({ name: 'Feynman', image: './images/Feynman.webp', description: 'I am the helper to help people use Feyrnman\'s process' });
 
     // Example: Fetch agents from an API (uncomment and replace URL)
     // updateAgentsFromAPI('https://example.com/api/agents');
+    teacherImage.innerHTML = `<img src="./images/Dean.webp" alt="Agent Image" style="width:100%; height:100%; object-fit: cover;">`;
+    const initialMessageDiv = document.createElement('div');
+    initialMessageDiv.className = 'agent-message';
+    initialMessageDiv.innerHTML = `<strong>Agent (Dean):</strong> I am the Dean of this mini UIUC, here is what you can do by using this miniapp:<br> 1 read a book together<br> 2 learn a video lecture together<br> 3 study a concept\n`;
+    initialMessageDiv.style.backgroundColor = '#f3e5f5'; // Light purple background for agent
+    initialMessageDiv.style.padding = '10px';
+    initialMessageDiv.style.borderRadius = '10px';
+    initialMessageDiv.style.margin = '10px 0';
+    textContent.appendChild(initialMessageDiv);
+    textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
 });

@@ -154,3 +154,10 @@ body {
     width: 100%;
     height: 100%;
 }
+#upload-area {
+    position: absolute;
+    top: 85%;
+    width: 5%;
+    height: 5%;
+    background-color: rgba(135, 158, 20, 0.8);
+}
