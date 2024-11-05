@@ -11,3 +11,5 @@ npm init
 npm install --save-dev electron
 `remember to to set the entry point as main.js` not `index.js` 
 pip install Flask
+conda install pytorch torchvision torchaudio -c pytorch
+pip install --upgrade --quiet llama-index-llms-nvidia llama-index-embeddings-nvidia llama-index-readers-file
