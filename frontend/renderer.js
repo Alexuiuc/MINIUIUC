@@ -103,22 +103,22 @@ document.addEventListener('DOMContentLoaded', () => {
         // Function to handle file upload
         async function handleFileUpload(file) {
             const apiUrl = window.env.API_URL; // Use the API_URL from the environment variables
+            console.log(apiUrl)
             const formData = new FormData();
             formData.append('file', file);
+            //console.log(formData)
     
             try {
                 const response = await fetch(`${apiUrl}/uploadFile`, {
                     method: 'POST',
                     body: formData
                 });
+
                 const result = await response.json();
                 console.log('File upload response:', result);
-                // uploadStatus.innerText = `Upload successful: ${result.filename}`;
-                // uploadStatus.style.color = 'green';
             } catch (error) {
                 console.error('Error uploading file:', error);
-                // uploadStatus.innerText = 'Error uploading file';
-                // uploadStatus.style.color = 'red';
+
             }
         }
     
@@ -127,8 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (fileInput.files.length > 0) {
                 handleFileUpload(fileInput.files[0]);
             } else {
-                // uploadStatus.innerText = 'No file selected';
-                // uploadStatus.style.color = 'red';
                 console.log("upload fail");
             }
         });
