@@ -9,6 +9,7 @@ pip install autogen-agentchat==0.4.0.dev2
 nvm use 20
 npm init
 npm install --save-dev electron
+npm install dotenv
 `remember to to set the entry point as main.js` not `index.js` 
 pip install Flask
 conda install pytorch torchvision torchaudio -c pytorch
