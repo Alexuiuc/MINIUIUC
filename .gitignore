@@ -164,5 +164,7 @@ cython_debug/
 node_modules/
 npm-debug.log
 package-lock.json
-
+documents/
+.index/
+storage/
 .ds_store
