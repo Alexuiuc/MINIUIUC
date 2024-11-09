@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const messageDiv = document.createElement('div');
             messageDiv.className = 'guide-message';
-            messageDiv.innerHTML = `<strong>Select any concept to Review/Teach </strong> <br> The key idea is to explain what you've learned as if you were teaching it to a child.`;
+            messageDiv.innerHTML = `<strong>Select any concept to Review/Teach </strong><br> The stage will auto change based on your input <br> The key idea is to explain what you've learned as if you were teaching it to a child.`;
             messageDiv.style.backgroundColor = '#eb8181'; // Light red background for reviews
             messageDiv.style.padding = '1vw';
             messageDiv.style.borderRadius = '1vw';
