@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
-from helper_module import process_user_input
+from helper_module import process_user_input, update_notes
 from multiprocessing.managers import BaseManager
 import os
-
+from flask import send_file
 manager = BaseManager(("", 5602), b"password")
 manager.register("query_index")
 manager.register("insert_into_index")
@@ -10,6 +10,15 @@ manager.register("insert_into_index")
 manager.connect()
 
 app = Flask(__name__)
+previousConcept="Admin"
+
+@app.route('/api/notes', methods=['GET'])
+def serve_notes():
+    notes_path = os.path.join('Notes', 'notes.json')  # Assuming notes.pdf is stored in documents folder
+    if os.path.exists(notes_path):
+        return send_file(notes_path, mimetype='application/pdf')
+    else:
+        return jsonify({"error": "Notes file not found"}), 404
 
 @app.route('/')
 def index():
@@ -18,11 +27,24 @@ def index():
 # Endpoint to handle user input from the front-end
 @app.route('/api/user-input', methods=['POST'])
 def user_input():
+    global previousConcept
+
     data = request.get_json()
     user_input_text = data.get('userInput', '')
+    agentTalkedTo = data.get('agent')
+    previousMessages = data.get('previousMessages')
 
     # Use external function to process the user input
-    response = process_user_input(user_input_text)
+    text,concept = process_user_input(user_input_text,agentTalkedTo,previousConcept,previousMessages,manager)
+
+    if concept != previousConcept:
+        previousConcept = concept
+    
+    update_notes(concept)
+    response ={
+        "agentname":agentTalkedTo,
+        "reply": text
+    }
 
     return jsonify(response)
 
@@ -35,7 +57,7 @@ def query_index():
             400,
         )
     response = manager.query_index(query_text)
-    
+
     return str(response), 200
 
 

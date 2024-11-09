@@ -53,11 +53,14 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: absolute;
 }
 
 .text-content {
+    width: 75%;
     flex-grow: 1;
-    position: relative;
+    left:25%;
+    position: absolute;
     height: 60vh; /* Set a height that fits within the container */
     overflow-y: auto; /* Enable vertical scrolling */
     padding: 10px;
