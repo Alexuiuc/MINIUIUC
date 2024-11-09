@@ -17,7 +17,58 @@ document.addEventListener('DOMContentLoaded', () => {
         div.appendChild(document.createTextNode(str));
         return div.innerHTML;
     }
+    // Function to fetch and display concepts to review
+    async function fetchAndDisplayConcepts() {
+        try {
+            const apiUrl = window.env.API_URL; // Use the API_URL from the environment variables
+            const response = await fetch(`${apiUrl}/notes`, {
+                method: 'GET',
+            });
 
+            if (!response.ok) {
+                throw new Error('Failed to fetch notes');
+            }
+
+            const notes = await response.json();
+            let conceptsToReview = "<ul>";
+            let conceptsToTeach = "<ul>";
+            notes.forEach(note => {
+                if (note.stage.toLowerCase() === 'review') {
+                    conceptsToReview += `<li>${note.term} (Review Time: ${note.review_time})</li>`;
+                }else if(note.stage.toLowerCase() === 'teaching'){
+                    conceptsToTeach += `<li>${note.term} (Learning Time: ${note.review_time})</li>`;
+                }
+            });
+            conceptsToReview += "</ul>";
+            conceptsToTeach += "</ul>";
+            // Display concepts to be reviewed in the textContent area
+            const teachMessageDiv = document.createElement('div');
+            teachMessageDiv.className = 'teach-message';
+            teachMessageDiv.innerHTML = `<strong>Concepts to Teach:</strong> ${conceptsToTeach}`;
+            teachMessageDiv.style.backgroundColor = '#1ff3cd'; // Light yellow background for reviews
+            teachMessageDiv.style.padding = '1vw';
+            teachMessageDiv.style.borderRadius = '1vw';
+            teachMessageDiv.style.margin = '1vw 0';
+            textContent.appendChild(teachMessageDiv);
+            textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
+
+            // Display concepts to be reviewed in the textContent area
+            const reviewMessageDiv = document.createElement('div');
+            reviewMessageDiv.className = 'review-message';
+            reviewMessageDiv.innerHTML = `<strong>Concepts to Review:</strong> ${conceptsToReview}`;
+            reviewMessageDiv.style.backgroundColor = '#fff3cd'; // Light yellow background for reviews
+            reviewMessageDiv.style.padding = '1vw';
+            reviewMessageDiv.style.borderRadius = '1vw';
+            reviewMessageDiv.style.margin = '1vw 0';
+            textContent.appendChild(reviewMessageDiv);
+            textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
+
+
+        } catch (error) {
+            console.error('Error fetching notes:', error);
+            alert('Unable to fetch notes. Please try again later.');
+        }
+    }
     // Function to add a new agent
     function addAgent(agentData) {
         const imgSection = document.createElement('div');
@@ -40,9 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
             agentMessageDiv.style.margin = '1vw 0';
             textContent.appendChild(agentMessageDiv);
             textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
+            // If agent is Feynman, fetch the notes and display concepts to be reviewed
+            if (agentData.name.toLowerCase() === 'feynman') {
+                fetchAndDisplayConcepts()
+            }
         });
-
-
         agentsContainer.appendChild(imgSection);
     }
 
@@ -282,8 +335,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addAgent = addAgent;
     window.removeAgent = removeAgent;
     window.updateAgentsFromAPI = updateAgentsFromAPI;
-    dean_description="I am the Dean of this mini UIUC, here is what you can do by using this miniapp:<br> 1 Learn a concept together<br> 2 upload the related materials to the app for me to reference"
-    feynMan_description = 'I am the helper to help people use Feyrnman\'s process'
+    dean_description="I am the Dean of this mini UIUC. Here are some things you can do with this app:<br> 1. Learn a concept together.<br> 2. Upload related materials to the app for me to reference."
+    feynMan_description = "I am here to help you use Feynman's method.<br> The key idea is to explain what you've learned as if you were teaching it to a child."
     // Example: Add initial agents (replace these with real data)
     addAgent({ name: 'Dean', image: './images/Dean.webp', description: dean_description });
     addAgent({ name: 'Feynman', image: './images/Feynman.webp', description: feynMan_description });
