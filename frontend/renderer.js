@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const messageDiv = document.createElement('div');
             messageDiv.className = 'guide-message';
-            messageDiv.innerHTML = `<strong>Select any concept to Review/Teach </strong>`;
+            messageDiv.innerHTML = `<strong>Select any concept to Review/Teach </strong> <br> The key idea is to explain what you've learned as if you were teaching it to a child.`;
             messageDiv.style.backgroundColor = '#1f93cd'; // Light yellow background for reviews
             messageDiv.style.padding = '1vw';
             messageDiv.style.borderRadius = '1vw';
@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.removeAgent = removeAgent;
     window.updateAgentsFromAPI = updateAgentsFromAPI;
     dean_description="I am the Dean of this mini UIUC. Here are some things you can do with this app:<br> 1. Learn a concept together.<br> 2. Upload related materials to the app for me to reference."
-    feynMan_description = "I am here to help you use Feynman's method.<br> The key idea is to explain what you've learned as if you were teaching it to a child."
+    feynMan_description = "I am here to help you use Feynman's method."
     // Example: Add initial agents (replace these with real data)
     addAgent({ name: 'Dean', image: './images/Dean.webp', description: dean_description });
     addAgent({ name: 'Feynman', image: './images/Feynman.webp', description: feynMan_description });
