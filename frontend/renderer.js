@@ -19,6 +19,29 @@ document.addEventListener('DOMContentLoaded', () => {
         div.appendChild(document.createTextNode(str));
         return div.innerHTML;
     }
+
+    function replaceText(inputString) {
+        // Replace text between ** with <b> for bold
+        inputString = inputString.replace(/\*\*(.*?)\*\*/g, '<br><b>$1</b><br>');
+        
+        // Replace text between -- with <i> for italic
+        inputString = inputString.replace(/--(.*?)--/g, '<i>$1</i>');
+        
+        // Replace text between ## with <u> for underline
+        inputString = inputString.replace(/##(.*?)##/g, '<u>$1</u>');
+
+        // Convert bullet points starting with * into a list
+        if (/\*(.*?)\*/g.test(inputString)) {
+            // Wrap bullet points in <ul> and convert them to <li>
+            inputString = inputString.replace(/(?:\n|^)\* (.*?)(?=\n|$)/g, '<li>$1</li>');
+            inputString = `<ul>${inputString}</ul>`;
+        }
+
+        // Add a line break after sentences ending with ., !, or ?
+        inputString = inputString.replace(/([.!?])(\s|$)/g, '$1<br>$2');
+
+        return inputString;
+    }
     // Function to fetch and display concepts to review
     async function fetchAndDisplayConcepts() {
         try {
@@ -45,12 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
             conceptsToReview += "</ul>";
             conceptsToTeach += "</tbody></table>";
             conceptsToTeach += "</ul>";
-            let conceptsToReviewHTML = converter.makeHtml(conceptsToReview);
-            let conceptsToTeachHTML = converter.makeHtml(conceptsToTeach);
             // Display concepts to be reviewed in the textContent area
             const teachMessageDiv = document.createElement('div');
             teachMessageDiv.className = 'teach-message';
-            teachMessageDiv.innerHTML = `<strong>Concepts to Teach:</strong> ${conceptsToTeachHTML}`;
+            teachMessageDiv.innerHTML = `<strong>Concepts to Teach:</strong> ${conceptsToTeach}`;
             teachMessageDiv.style.backgroundColor = '#1ff3cd'; // Light yellow background for reviews
             teachMessageDiv.style.padding = '1vw';
             teachMessageDiv.style.borderRadius = '1vw';
@@ -61,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Display concepts to be reviewed in the textContent area
             const reviewMessageDiv = document.createElement('div');
             reviewMessageDiv.className = 'review-message';
-            reviewMessageDiv.innerHTML = `<strong>Concepts to Review:</strong> ${conceptsToReviewHTML}`;
+            reviewMessageDiv.innerHTML = `<strong>Concepts to Review:</strong> ${conceptsToReview}`;
             reviewMessageDiv.style.backgroundColor = '#fff3cd'; // Light yellow background for reviews
             reviewMessageDiv.style.padding = '1vw';
             reviewMessageDiv.style.borderRadius = '1vw';
@@ -182,14 +203,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const agentMessageDiv = document.createElement('div');
                 
                 agentMessageDiv.className = 'agent-message';
-                agentMessageDiv.innerHTML = `<strong>Agent (${result.agentname}):</strong> ${result.reply}`;
+                agentMessageDiv.innerHTML = `<strong>Agent (${result.agentname}):</strong> ${replaceText(result.reply)}`;
                 agentMessageDiv.style.backgroundColor = '#f3e5f5'; // Light purple background for agent
                 agentMessageDiv.style.padding = '1vw';
                 agentMessageDiv.style.borderRadius = '1vw';
                 agentMessageDiv.style.margin = '1vw 0';
 
-                let agentMessageDivHTML = converter.makeHtml(agentMessageDiv);
-                textContent.appendChild(agentMessageDivHTML);
+                textContent.appendChild(agentMessageDiv);
                 textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
             }
         } catch (error) {
