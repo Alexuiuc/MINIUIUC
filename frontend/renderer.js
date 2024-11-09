@@ -57,6 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+    function replaceAgent(agentName,description){
+        teacherImage.innerHTML = `<img src="./images/${agentName}.webp" alt="Agent Image" style="width:100%; height:100%; object-fit: cover;">`;
+        const initialMessageDiv = document.createElement('div');
+        initialMessageDiv.className = 'agent-message';
+        initialMessageDiv.innerHTML = `<strong>Agent (${agentName}):</strong> ${description}`;
+        initialMessageDiv.style.backgroundColor = '#f3e5f5'; // Light purple background for agent
+        initialMessageDiv.style.padding = '10px';
+        initialMessageDiv.style.borderRadius = '10px';
+        initialMessageDiv.style.margin = '10px 0';
+        textContent.appendChild(initialMessageDiv);
+        textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
+        currentAgent = agentName
+    }
+
 
     // Function to fetch and update agents from API
     async function updateAgentsFromAPI(apiUrl) {
@@ -268,22 +282,14 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addAgent = addAgent;
     window.removeAgent = removeAgent;
     window.updateAgentsFromAPI = updateAgentsFromAPI;
-
+    dean_description="I am the Dean of this mini UIUC, here is what you can do by using this miniapp:<br> 1 Learn a concept together<br> 2 upload the related materials to the app for me to reference"
+    feynMan_description = 'I am the helper to help people use Feyrnman\'s process'
     // Example: Add initial agents (replace these with real data)
-    addAgent({ name: 'Dean', image: './images/Dean.webp', description: 'I am the Dean of this mini UIUC, here is what you can do by using this miniapp:<br> 1 read a book together<br> 2 learn a video lecture together<br> 3 study a concept\n' });
-    addAgent({ name: 'Feynman', image: './images/Feynman.webp', description: 'I am the helper to help people use Feyrnman\'s process' });
+    addAgent({ name: 'Dean', image: './images/Dean.webp', description: dean_description });
+    addAgent({ name: 'Feynman', image: './images/Feynman.webp', description: feynMan_description });
 
     // Example: Fetch agents from an API (uncomment and replace URL)
     // updateAgentsFromAPI('https://example.com/api/agents');
-    teacherImage.innerHTML = `<img src="./images/Dean.webp" alt="Agent Image" style="width:100%; height:100%; object-fit: cover;">`;
-    const initialMessageDiv = document.createElement('div');
-    initialMessageDiv.className = 'agent-message';
-    initialMessageDiv.innerHTML = `<strong>Agent (Dean):</strong> I am the Dean of this mini UIUC, here is what you can do by using this miniapp:<br> 1 Learn a concept together<br> 2 upload the related materials to the app for me to reference`;
-    initialMessageDiv.style.backgroundColor = '#f3e5f5'; // Light purple background for agent
-    initialMessageDiv.style.padding = '10px';
-    initialMessageDiv.style.borderRadius = '10px';
-    initialMessageDiv.style.margin = '10px 0';
-    textContent.appendChild(initialMessageDiv);
-    textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
-    currentAgent = "Dean"
+   
+    replaceAgent("Dean",dean_description)
 });
