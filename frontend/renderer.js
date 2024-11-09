@@ -34,9 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let conceptsToTeach = "<ul>";
             notes.forEach(note => {
                 if (note.stage.toLowerCase() === 'review') {
-                    conceptsToReview += `<li>${note.term} (Review Time: ${note.review_time})</li>`;
+                    conceptsToReview += `<li>${note.term} \t(Review Time: ${note.review_time})</li>`;
                 }else if(note.stage.toLowerCase() === 'teaching'){
-                    conceptsToTeach += `<li>${note.term} (Learning Time: ${note.review_time})</li>`;
+                    conceptsToTeach += `<li>${note.term} \t(Learning Time: ${note.review_time})</li>`;
                 }
             });
             conceptsToReview += "</ul>";
@@ -62,6 +62,17 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewMessageDiv.style.margin = '1vw 0';
             textContent.appendChild(reviewMessageDiv);
             textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'guide-message';
+            messageDiv.innerHTML = `<strong>Select any concept to Review/Teach </strong>`;
+            messageDiv.style.backgroundColor = '#1f93cd'; // Light yellow background for reviews
+            messageDiv.style.padding = '1vw';
+            messageDiv.style.borderRadius = '1vw';
+            messageDiv.style.margin = '1vw 0';
+            textContent.appendChild(messageDiv);
+            textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
+
 
 
         } catch (error) {
@@ -111,10 +122,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     function replaceAgent(agentName,description){
-        teacherImage.innerHTML = `<img src="./images/${agentName}.webp" alt="Agent Image" style="width:100%; height:100%; object-fit: cover;">`;
+        teacherImage.innerHTML = `<img src="./images/${escapeHTML(agentName)}.webp" alt="Agent Image" style="width:100%; height:100%; object-fit: cover;">`;
         const initialMessageDiv = document.createElement('div');
         initialMessageDiv.className = 'agent-message';
-        initialMessageDiv.innerHTML = `<strong>Agent (${agentName}):</strong> ${description}`;
+        initialMessageDiv.innerHTML = `<strong>Agent (${escapeHTML(agentName)}):</strong> ${description}`;
         initialMessageDiv.style.backgroundColor = '#f3e5f5'; // Light purple background for agent
         initialMessageDiv.style.padding = '10px';
         initialMessageDiv.style.borderRadius = '10px';

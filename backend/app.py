@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from helper_module import process_user_input, update_notes
+from helper_module import process_user_input
 from multiprocessing.managers import BaseManager
 import os
 from flask import send_file
@@ -39,8 +39,7 @@ def user_input():
 
     if concept != previousConcept:
         previousConcept = concept
-    
-    update_notes(concept)
+
     response ={
         "agentname":agentTalkedTo,
         "reply": text
