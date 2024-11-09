@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadStatus = document.getElementById('upload-status');
     const notesButton = document.getElementById('notesButton');
     let currentAgent = null;
+    // use makedown
+    const converter = new showdown.Converter();
 
     // Function to escape HTML to prevent XSS attacks
     function escapeHTML(str) {
@@ -30,21 +32,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const notes = await response.json();
-            let conceptsToReview = "<ul>";
-            let conceptsToTeach = "<ul>";
+            let conceptsToReview = "<table style='width: 100%; border-collapse: collapse;'><thead><tr><th style='border: 1px solid black; padding: 10px;'>Concept</th><th style='border: 1px solid black; padding: 10px;'>Review Time</th></tr></thead><tbody>";
+            let conceptsToTeach = "<table style='width: 100%; border-collapse: collapse;'><thead><tr><th style='border: 1px solid black; padding: 10px;'>Concept</th><th style='border: 1px solid black; padding: 10px;'>Learn Time</th></tr></thead><tbody>";
             notes.forEach(note => {
                 if (note.stage.toLowerCase() === 'review') {
-                    conceptsToReview += `<li>${note.term} \t(Review Time: ${note.review_time})</li>`;
+                    conceptsToReview += `<tr><td style='border: 1px solid black; padding: 10px;'>${note.term}</td><td style='border: 1px solid black; padding: 10px;'>${note.review_time}</td></tr>`;
                 }else if(note.stage.toLowerCase() === 'teaching'){
-                    conceptsToTeach += `<li>${note.term} \t(Learning Time: ${note.review_time})</li>`;
+                    conceptsToTeach += `<tr><td style='border: 1px solid black; padding: 10px;'>${note.term}</td><td style='border: 1px solid black; padding: 10px;'>${note.review_time}</td></tr>`;
                 }
             });
+            conceptsToReview += "</tbody></table>";
             conceptsToReview += "</ul>";
+            conceptsToTeach += "</tbody></table>";
             conceptsToTeach += "</ul>";
+            let conceptsToReviewHTML = converter.makeHtml(conceptsToReview);
+            let conceptsToTeachHTML = converter.makeHtml(conceptsToTeach);
             // Display concepts to be reviewed in the textContent area
             const teachMessageDiv = document.createElement('div');
             teachMessageDiv.className = 'teach-message';
-            teachMessageDiv.innerHTML = `<strong>Concepts to Teach:</strong> ${conceptsToTeach}`;
+            teachMessageDiv.innerHTML = `<strong>Concepts to Teach:</strong> ${conceptsToTeachHTML}`;
             teachMessageDiv.style.backgroundColor = '#1ff3cd'; // Light yellow background for reviews
             teachMessageDiv.style.padding = '1vw';
             teachMessageDiv.style.borderRadius = '1vw';
@@ -55,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Display concepts to be reviewed in the textContent area
             const reviewMessageDiv = document.createElement('div');
             reviewMessageDiv.className = 'review-message';
-            reviewMessageDiv.innerHTML = `<strong>Concepts to Review:</strong> ${conceptsToReview}`;
+            reviewMessageDiv.innerHTML = `<strong>Concepts to Review:</strong> ${conceptsToReviewHTML}`;
             reviewMessageDiv.style.backgroundColor = '#fff3cd'; // Light yellow background for reviews
             reviewMessageDiv.style.padding = '1vw';
             reviewMessageDiv.style.borderRadius = '1vw';
@@ -171,14 +177,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Append the agent's reply to the textContent area
             if (result.agentname && result.reply) {
+
+                
                 const agentMessageDiv = document.createElement('div');
+                
                 agentMessageDiv.className = 'agent-message';
                 agentMessageDiv.innerHTML = `<strong>Agent (${result.agentname}):</strong> ${result.reply}`;
                 agentMessageDiv.style.backgroundColor = '#f3e5f5'; // Light purple background for agent
                 agentMessageDiv.style.padding = '1vw';
                 agentMessageDiv.style.borderRadius = '1vw';
                 agentMessageDiv.style.margin = '1vw 0';
-                textContent.appendChild(agentMessageDiv);
+
+                let agentMessageDivHTML = converter.makeHtml(agentMessageDiv);
+                textContent.appendChild(agentMessageDivHTML);
                 textContent.scrollTop = textContent.scrollHeight; // Scroll to the bottom
             }
         } catch (error) {
