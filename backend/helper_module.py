@@ -73,7 +73,7 @@ def update_notes(concept):
 
     # If the concept is new, add it to the list
     if not updated:
-        notes.append({"term": concept, "stage": "Learning", "review_time": current_time})
+        notes.append({"term": concept, "stage": "Teaching", "review_time": current_time})
 
     # Write updated notes back to the file
     with open(notes_path, 'w') as file:
@@ -115,16 +115,8 @@ def process_user_input(user_input_text,agentTalkedTo,previousTopic,previousMessa
             ]
             return str(llm.chat(messages))[10:], concept            
     elif agentTalkedTo=='Feynman':
-        
+
         pass
     else:
         return "unknow agent","unknown"
 
-
-
-
-    
-    # return {
-    #     "agentname": "Dean",
-    #     "reply": "I am the Dean of this mini UIUC, feel free to ask me any admin-related questions!"
-    # }
