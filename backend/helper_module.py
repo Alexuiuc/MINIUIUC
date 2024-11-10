@@ -114,7 +114,7 @@ def start_new_topic(user_input_text,concept,manager):
 def process_user_input(user_input_text,agentTalkedTo,previousTopic,previousMessage, manager):
     # Process the user input and generate an appropriate response
     if agentTalkedTo=='Dean':
-        concept = guard(user_input_text,previousTopic)
+        concept = guard(user_input_text)
         if concept == previousTopic:
             
             return continue_talk(previousMessage,user_input_text), concept, 
